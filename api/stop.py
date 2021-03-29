@@ -6,7 +6,7 @@ stop_controller = Blueprint('stop_controller', __name__)
 
 @stop_controller.route('/api/stop', methods=['GET'])
 def get_stops():
-  return jsonify({'stops': list(map(lambda stop: stop.serialize(), Stop.query.all()))})
+  return jsonify({'stops': list(map(lambda stop: stop.serialize(), Stop.get_all()))})
 
 @stop_controller.route('/api/stop/<id>', methods=['GET'])
 def get_stop(id):
@@ -22,8 +22,7 @@ def create_stop():
             request.json['number'],
             'POINT({0} {1})'.format(request.json['longitude'], request.json['latitude'])
         )
-        db.session.add(stop)
-        db.session.commit()
+        stop.save()
         print('Added stop: ', stop)
         result = 'Added stop: {0}'.format(stop.serialize())
     except err:
@@ -47,8 +46,8 @@ def update_stop(id):
 def delete_stop(id):
     result = False
     try:
-        db.session.delete(Stop.query.get(id))
-        db.session.commit()
+        stop = Stop.query.get(id)
+        stop.delete()
         result = True
     except err:
         print(err)

@@ -6,7 +6,7 @@ bus_controller = Blueprint('bus_controller', __name__)
 
 @bus_controller.route('/api/bus', methods=['GET'])
 def get_buses():
-    return jsonify({'buses': list(map(lambda bus: bus.serialize(), Bus.query.all()))})
+    return jsonify({'buses': list(map(lambda bus: bus.serialize(), Bus.get_all()))})
 
 @bus_controller.route('/api/bus/<id>', methods=['GET'])
 def get_bus(id):
@@ -21,8 +21,7 @@ def create_bus():
             request.json['vehicleId'],
             'POINT({0} {1})'.format(request.json['longitude'], request.json['latitude'])
         )
-        db.session.add(bus)
-        db.session.commit()
+        bus.save()
         print('Added bus: ', bus)
         result = 'Added bus: {0}'.format(bus.serialize())
     except err:
@@ -45,8 +44,8 @@ def update_bus(id):
 def delete_bus(id):
     result = False
     try:
-        db.session.delete(Bus.query.get(id))
-        db.session.commit()
+        bus = Bus.query.get(id)
+        bus.delete()
         result = True
     except err:
         print(err)
