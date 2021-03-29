@@ -18,7 +18,7 @@ class Stop(db.Model):
         self.number = number
         
     def __repr__(self):
-        return '<id {}>'.format(self.id)
+        return '<Stop {}>'.format(self.name)
 
     def serialize(self):
         return {"id": self.id, "name": self.name, "stopNo": self.number, "stopName": self.name, "long": self.longitude(), "lat": self.latitude()}
@@ -28,28 +28,3 @@ class Stop(db.Model):
     
     def latitude(self):
         return db.session.scalar(ST_Y(self.location))
-
-class Bus(db.Model):
-    __tablename__ = 'buses'
-    
-    id = db.Column(db.Integer, primary_key=True)
-    vehicleId = db.Column(db.Integer)
-    location = db.Column(Geography(geometry_type='POINT', srid=4326))
-    
-    def __init__(self, vehicleId, location):
-        self.vehicleId = vehicleId
-        self.location = location
-        
-    def __repr__(self):
-        return '<id {}>'.format(self.id)
-
-    def serialize(self):
-        return {"id": self.id, "busId": self.vehicleId, "longitude": self.longitude(), "latitude": self.latitude()}
-
-    def longitude(self):
-        return db.session.scalar(ST_X(self.location))
-    
-    def latitude(self):
-        return db.session.scalar(ST_Y(self.location))
-    
-    

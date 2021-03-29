@@ -6,9 +6,7 @@ app = Flask(__name__)
 app.config.from_object(os.environ['APP_SETTINGS']);
 db = SQLAlchemy(app)
 
-from models import Stop, Bus
-from api.bus import bus_controller
-from api.stop import stop_controller
+from api import *
 
 app.register_blueprint(bus_controller)
 app.register_blueprint(stop_controller)
