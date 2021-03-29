@@ -18,18 +18,18 @@ def create_bus():
     error = ''
     try:
         bus = Bus(
-            request.json["vehicleId"],
-            'POINT({0} {1})'.format(request.json["longitude"], request.json["latitude"])
+            request.json['vehicleId'],
+            'POINT({0} {1})'.format(request.json['longitude'], request.json['latitude'])
         )
         db.session.add(bus)
         db.session.commit()
-        print("Added bus: ", bus)
-        result = "Added bus: {0}".format(bus.serialize())
+        print('Added bus: ', bus)
+        result = 'Added bus: {0}'.format(bus.serialize())
     except err:
-        print("Unexpected error:", err)
-        error = "Error: {0}".format(err)
+        print('Unexpected error:', err)
+        error = 'Error: {0}'.format(err)
     
-    return jsonify({"result": result, "error": error})
+    return jsonify({'result': result, 'error': error})
 
 @bus_controller.route('/api/bus/<id>', methods=['PUT'])
 def update_bus(id):
@@ -39,7 +39,7 @@ def update_bus(id):
     lat = request.json.get('latitude', bus.latitude())
     bus.location = 'POINT({0} {1})'.format(long, lat)
     db.session.commit()
-    return jsonify({"Bus": bus.serialize()})
+    return jsonify({'Bus': bus.serialize()})
 
 @bus_controller.route('/api/bus/<id>', methods=['DELETE'])
 def delete_bus(id):
@@ -51,4 +51,4 @@ def delete_bus(id):
     except err:
         print(err)
     
-    return jsonify({"result": result})
+    return jsonify({'result': result})

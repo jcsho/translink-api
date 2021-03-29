@@ -21,7 +21,7 @@ class Stop(db.Model):
         return '<Stop {}>'.format(self.name)
 
     def serialize(self):
-        return {"id": self.id, "name": self.name, "stopNo": self.number, "stopName": self.name, "long": self.longitude(), "lat": self.latitude()}
+        return {'id': self.id, 'name': self.name, 'stopNo': self.number, 'stopName': self.name, 'long': self.longitude(), 'lat': self.latitude()}
     
     def longitude(self):
         return db.session.scalar(ST_X(self.location))

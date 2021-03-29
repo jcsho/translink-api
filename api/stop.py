@@ -18,19 +18,19 @@ def create_stop():
     error = ''
     try:
         stop = Stop(
-            request.json["name"],
-            request.json["number"],
-            'POINT({0} {1})'.format(request.json["longitude"], request.json["latitude"])
+            request.json['name'],
+            request.json['number'],
+            'POINT({0} {1})'.format(request.json['longitude'], request.json['latitude'])
         )
         db.session.add(stop)
         db.session.commit()
-        print("Added stop: ", stop)
-        result = "Added stop: {0}".format(stop.serialize())
+        print('Added stop: ', stop)
+        result = 'Added stop: {0}'.format(stop.serialize())
     except err:
-        print("Unexpected error:", err)
-        error = "Error: {0}".format(err)
+        print('Unexpected error:', err)
+        error = 'Error: {0}'.format(err)
     
-    return jsonify({"result": result, "error": error})
+    return jsonify({'result': result, 'error': error})
 
 @stop_controller.route('/api/stop/<id>', methods=['PUT'])
 def update_stop(id):
@@ -41,7 +41,7 @@ def update_stop(id):
     lat = request.json.get('latitude', stop.latitude())
     stop.location = 'POINT({0} {1})'.format(long, lat)
     db.session.commit()
-    return jsonify({"stop": stop.serialize()})
+    return jsonify({'stop': stop.serialize()})
 
 @stop_controller.route('/api/stop/<id>', methods=['DELETE'])
 def delete_stop(id):
@@ -53,4 +53,4 @@ def delete_stop(id):
     except err:
         print(err)
     
-    return jsonify({"result": result})
+    return jsonify({'result': result})

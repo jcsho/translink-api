@@ -20,7 +20,7 @@ class Bus(db.Model):
         return '<Bus {}>'.format(self.vehicleId)
 
     def serialize(self):
-        return {"id": self.id, "busId": self.vehicleId, "longitude": self.longitude(), "latitude": self.latitude()}
+        return {'id': self.id, 'busId': self.vehicleId, 'longitude': self.longitude(), 'latitude': self.latitude()}
 
     def longitude(self):
         return db.session.scalar(ST_X(self.location))
