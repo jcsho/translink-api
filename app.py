@@ -8,8 +8,10 @@ db = SQLAlchemy(app)
 
 from models import Stop, Bus
 from api.bus import bus_controller
+from api.stop import stop_controller
 
 app.register_blueprint(bus_controller)
+app.register_blueprint(stop_controller)
 
 @app.route('/')
 def hello():

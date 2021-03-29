@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, request
 from models import Bus
+from app import db
 
 bus_controller = Blueprint('bus_controller', __name__)
 
@@ -23,7 +24,7 @@ def create_bus():
         db.session.add(bus)
         db.session.commit()
         print("Added bus: ", bus)
-        result = "Added bus: {0}".format(bus.serialize)
+        result = "Added bus: {0}".format(bus.serialize())
     except err:
         print("Unexpected error:", err)
         error = "Error: {0}".format(err)
