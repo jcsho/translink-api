@@ -10,6 +10,7 @@ from api import *
 
 app.register_blueprint(bus_controller)
 app.register_blueprint(stop_controller)
+app.register_blueprint(route_controller)
 
 print(os.environ['APP_SETTINGS'])
     

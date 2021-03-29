@@ -37,7 +37,7 @@ def create_stop():
         stop.save()
         print('Added stop: ', stop)
         result = 'Added stop: {0}'.format(stop.serialize())
-    except err:
+    except Exception as err:
         print('Unexpected error:', err)
         error = 'Error: {0}'.format(err)
     
@@ -61,7 +61,7 @@ def delete_stop(id):
         stop = Stop.query.get(id)
         stop.delete()
         result = True
-    except err:
+    except Exception as err:
         print(err)
     
     return jsonify({'result': result})

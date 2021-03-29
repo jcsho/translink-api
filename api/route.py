@@ -26,15 +26,15 @@ def create_route():
     result = ''
     error = ''
     try:
-        route = route(
-            request.json['routeId']
+        route = Route(
+            request.json['routeId'],
             request.json['busId'],
             request.json['stopId']
         )
         route.save()
         print('Added route: ', route)
         result = 'Added route: {0}'.format(route.serialize())
-    except err:
+    except Exception as err:
         print('Unexpected error:', err)
         error = 'Error: {0}'.format(err)
     
@@ -56,7 +56,7 @@ def delete_route(id):
         route = route.query.get(id)
         route.delete()
         result = True
-    except err:
+    except Exception as err:
         print(err)
     
     return jsonify({'result': result})

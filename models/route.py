@@ -4,20 +4,23 @@ from .bus import Bus
 from .stop import Stop
 
 class Route(db.Model):
-  __tablename__ = 'routes'
+    __tablename__ = 'routes'
 
-  id = db.Column(db.Integer, primary_key=True)
-  route_id = db.Column(db.Integer)
-  bus_id = db.Column(db.Integer, db.ForeignKey('buses.id'))
-  stop_id = db.Column(db.Integer, db.ForeignKey('stops.id'))
+    id = db.Column(db.Integer, primary_key=True)
+    route_id = db.Column(db.Integer)
+    bus_id = db.Column(db.Integer, db.ForeignKey('buses.id'))
+    stop_id = db.Column(db.Integer, db.ForeignKey('stops.id'))
 
-  bus = relationship(Bus, backref=backref("routes"))
-  stop = relationship(Stop, backref=backref("routes"))
+    bus = relationship(Bus, backref=backref("routes"))
+    stop = relationship(Stop, backref=backref("routes"))
 
-  def __init__(self, route_id, bus_id, stop_id):
-    self.route_id = route_id
-    self.bus_id = bus_id
-    self.stop_id = stop_id
+    def __init__(self, route_id, bus_id, stop_id):
+      self.route_id = route_id
+      self.bus_id = bus_id
+      self.stop_id = stop_id
+
+    def serialize(self):
+      return {'id': self.id, 'routeId': self.route_id, 'busId': self.bus_id, 'stopId': self.stop_id}
 
     @staticmethod
     def get_all():

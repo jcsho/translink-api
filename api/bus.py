@@ -37,7 +37,7 @@ def create_bus():
         bus.save()
         print('Added bus: ', bus)
         result = 'Added bus: {0}'.format(bus.serialize())
-    except err:
+    except Exception as err:
         print('Unexpected error:', err)
         error = 'Error: {0}'.format(err)
     
@@ -60,7 +60,7 @@ def delete_bus(id):
         bus = Bus.query.get(id)
         bus.delete()
         result = True
-    except err:
+    except Exception as err:
         print(err)
     
     return jsonify({'result': result})
