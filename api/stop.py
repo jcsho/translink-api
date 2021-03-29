@@ -6,7 +6,19 @@ stop_controller = Blueprint('stop_controller', __name__)
 
 @stop_controller.route('/api/stop', methods=['GET'])
 def get_stops():
-  return jsonify({'stops': list(map(lambda stop: stop.serialize(), Stop.get_all()))})
+    stops = None
+    if request.is_json:
+      filters = request.json.get('filters')
+      if 'longitude' in filters or 'latitude' in filters:
+        stops = Stops.get_within_area(
+          filters['longitude'], 
+          filters['latitude'],
+          filters['radius']
+        )
+    else:
+      stops = Stops.get_all()
+      
+    return jsonify({'stops': list(map(lambda stop: stop.serialize(), stops))})
 
 @stop_controller.route('/api/stop/<id>', methods=['GET'])
 def get_stop(id):

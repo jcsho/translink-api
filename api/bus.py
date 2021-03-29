@@ -6,7 +6,20 @@ bus_controller = Blueprint('bus_controller', __name__)
 
 @bus_controller.route('/api/bus', methods=['GET'])
 def get_buses():
-    return jsonify({'buses': list(map(lambda bus: bus.serialize(), Bus.get_all()))})
+
+    buses = None
+    if request.is_json:
+      filters = request.json.get('filters')
+      if 'longitude' in filters or 'latitude' in filters:
+        buses = Bus.get_within_area(
+          filters['longitude'], 
+          filters['latitude'],
+          filters['radius']
+        )
+    else:
+      buses = Bus.get_all()
+
+    return jsonify({'buses': list(map(lambda bus: bus.serialize(), buses))})
 
 @bus_controller.route('/api/bus/<id>', methods=['GET'])
 def get_bus(id):

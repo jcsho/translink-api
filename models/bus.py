@@ -1,6 +1,7 @@
 from app import db
 from geoalchemy2 import Geography
-from geoalchemy2.functions import ST_X, ST_Y
+from geoalchemy2.functions import ST_X, ST_Y, ST_DWithin
+from geoalchemy2.elements import WKTElement
 
 # migrations require modifications to import geoalchemy types
 # http://codeomitted.com/flask-postgis-and-alembic-migration/
@@ -31,6 +32,11 @@ class Bus(db.Model):
     @staticmethod
     def get_all():
       return Bus.query.all()
+
+    @staticmethod
+    def get_within_area(longitude, latitude, radius=5):
+      point = WKTElement('POINT({0} {1})'.format(longitude, latitude), srid=4326)
+      return Bus.query.filter(ST_DWithin(Bus.location, point, radius))
 
     def save(self):
       db.session.add(self)
