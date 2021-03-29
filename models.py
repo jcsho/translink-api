@@ -1,5 +1,6 @@
 from app import db
 from geoalchemy2 import Geography
+from geoalchemy2.functions import ST_X, ST_Y
 
 # migrations require modifications to import geoalchemy types
 # http://codeomitted.com/flask-postgis-and-alembic-migration/
@@ -18,7 +19,16 @@ class Stop(db.Model):
         
     def __repr__(self):
         return '<id {}>'.format(self.id)
-        
+
+    def serialize(self):
+        return {"id": self.id, "name": self.name, "stopNo": self.number, "stopName": self.name, "long": self.longitude(), "lat": self.latitude()}
+    
+    def longitude(self):
+        return db.session.scalar(ST_X(self.location))
+    
+    def latitude(self):
+        return db.session.scalar(ST_Y(self.location))
+
 class Bus(db.Model):
     __tablename__ = 'buses'
     
@@ -32,5 +42,14 @@ class Bus(db.Model):
         
     def __repr__(self):
         return '<id {}>'.format(self.id)
+
+    def serialize(self):
+        return {"id": self.id, "busId": self.vehicleId, "longitude": self.longitude(), "latitude": self.latitude()}
+
+    def longitude(self):
+        return db.session.scalar(ST_X(self.location))
+    
+    def latitude(self):
+        return db.session.scalar(ST_Y(self.location))
     
     
