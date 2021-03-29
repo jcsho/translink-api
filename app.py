@@ -15,4 +15,4 @@ app.register_blueprint(route_controller)
 print(os.environ['APP_SETTINGS'])
     
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0')
